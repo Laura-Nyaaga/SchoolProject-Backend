@@ -1,6 +1,6 @@
 import datetime
 from django.db import models
-from course.models import Course
+# from course.models import Course
 GENDER_CHOICES = (
     ('MALE', 'Male'),
     ('FEMALE', 'Female'),
@@ -21,7 +21,8 @@ class Teacher(models.Model):
     account_number = models.PositiveIntegerField(unique=True, null=False)
     salary = models.DecimalField(max_digits=10, decimal_places=2, null=False, default= 0.00)
     department = models.CharField(max_length=30)
-    course = models.ManyToManyField(Course, on_delete=models.CASCADE, related_name='teachers')
+    id = models.AutoField(primary_key=True)
+    # course = models.ManyToManyField(Course, on_delete=models.CASCADE, related_name='teachers')
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
