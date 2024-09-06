@@ -1,12 +1,26 @@
-'hjjkjklkkfcxffgyv'
+
 from datetime import date, datetime
 from rest_framework import serializers
 from student.models import Student
 from student_class.models import Student_Class
 from teacher.models import Teacher
 from classperiod.models import ClassPeriod
-# from classroom.models import Classroom
 from course.models import Course
+
+class TeacherSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = Teacher
+        fields = "__all__"
+
+class MinimalTeacherSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+    def get_full_name(self,object):
+        return f"{object.first_name} {object.last_name}"
+    class Meta:
+        model = Teacher
+        fields = ['id', 'full_name', 'email']
+
+
 
 class StudentSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()
@@ -30,8 +44,7 @@ class MinimalStudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ['id', 'full_name', 'email', 'age']
-
-        
+       
 
 class Student_ClassSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()
@@ -56,33 +69,6 @@ class MinimalClassPeriodSerializer(serializers.ModelSerializer):
         model = ClassPeriod
         fields = ['id', 'name', 'start_time', 'end_time']
 
-class TeacherSerializer(serializers.ModelSerializer):
-     class Meta:
-        model = Teacher
-        fields = "__all__"
-
-class MinimalTeacherSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField()
-    def get_full_name(self,object):
-        return f"{object.first_name} {object.last_name}"
-    class Meta:
-        model = Teacher
-        fields = ['id', 'full_name', 'email']
-
-class MinimalTeacherSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField()
-    def get_full_name(self, object):
-        return f"{object.first_name} {object.last_name}"
-    class Meta:
-        model = Teacher
-        fields = ['id', 'full_name', 'email']
-
-
-# class ClassroomSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Classroom
-#         fields = "__all__"
 
 class CourseSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()
@@ -94,3 +80,9 @@ class MinimalCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id', 'name', 'teacher']
+
+# class ClassroomSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = Classroom
+#         fields = "__all__"
